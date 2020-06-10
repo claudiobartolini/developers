@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const App = require('./app')
+const Funct = require('./funct')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -33,15 +33,6 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    age: {
-        type: Number,
-        default: 0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error('Age must be a postive number')
-            }
-        }
-    },
     tokens: [{
         token: {
             type: String,
@@ -56,7 +47,7 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.virtual('apps', {
-    ref: 'App',
+    ref: 'Funct',
     localField: '_id',
     foreignField: 'owner'
 })
@@ -109,10 +100,10 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-// Delete user apps when user is removed
+// Delete user functions when user is removed
 userSchema.pre('remove', async function (next) {
     const user = this
-    await App.deleteMany({ owner: user._id })
+    await Funct.deleteMany({ owner: user._id })
     next()
 })
 
