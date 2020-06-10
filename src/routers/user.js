@@ -20,6 +20,16 @@ router.post('/users', async (req, res) => {
     }
 })
 
+// TODO: mock server
+router.post('/functions', async (req, res) => {
+    const data = {
+        id: '234s54cbb98029f3d',
+        invocationURL: 'http://awesome-alfie.boxfunction.online'
+    }
+    console.log(data)
+    res.send(data)
+})
+
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
